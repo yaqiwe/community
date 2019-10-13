@@ -1,0 +1,4 @@
+spring:
+  thymeleaf:
+    #\u7981\u7528thymeleaf\u7684\u7F13\u5B58
+    cache: false
