@@ -7,7 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -41,11 +43,15 @@ public class thymeleafController {
      * @return
      */
     @GetMapping(value = "/callBack")
-    public String callBack(String code,String state){
+    public String callBack(@RequestParam(value = "code") String code,
+                           @RequestParam(value = "state") String state,
+                           HttpServletRequest request){
         accessTokenDto.setCode(code);
+        accessTokenDto.setState(state);
         String access_token = users.getAccessToken(accessTokenDto);
         GitHubUserDto githubUser = users.getGithubUser(access_token);
-        log.info("callBack githubUser:{}",githubUser);
+        request.getSession().setAttribute("githubUser",githubUser);
+//        log.info("callBack githubUser:{}",githubUser);
         return "redirect:/index";
     }
 }
