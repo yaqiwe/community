@@ -2,3 +2,10 @@ spring:
   thymeleaf:
     #\u7981\u7528thymeleaf\u7684\u7F13\u5B58
     cache: false
+
+#Github配置
+github:
+  client_id: "Iv1.1e80babdfb6df286"
+  redirect_uri: "http://localhost:8080/callBack"
+  state: "yaqiwe_commodity_app"
+  client_secret: "d7c27bfe9e6638d61e65e1a8ca40b84c3520a4e6"
