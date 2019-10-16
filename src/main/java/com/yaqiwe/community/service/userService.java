@@ -2,6 +2,9 @@ package com.yaqiwe.community.service;
 
 import com.yaqiwe.community.dto.AccessTokenDto;
 import com.yaqiwe.community.dto.GitHubUserDto;
+import com.yaqiwe.community.entity.user;
+
+import javax.servlet.http.Cookie;
 
 /**
  * @author ：yaqiwe
@@ -20,5 +23,12 @@ public interface userService {
      * @param token github返回的AccessToken
      * @return
      */
-    GitHubUserDto getGithubUser(String token);
+    String getGithubUser(String token);
+
+    /**
+     * 根据登录token获取用户信息
+     * @param cookies 请求时传递的cookie列表
+     * @return
+     */
+    user getUserByToken(Cookie[] cookies);
 }

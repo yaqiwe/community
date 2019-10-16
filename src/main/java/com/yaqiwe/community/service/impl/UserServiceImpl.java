@@ -1,14 +1,21 @@
 package com.yaqiwe.community.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.yaqiwe.community.Repostitory.userRepository;
 import com.yaqiwe.community.dto.AccessTokenDto;
 import com.yaqiwe.community.dto.GitHubUserDto;
+import com.yaqiwe.community.entity.user;
+import com.yaqiwe.community.enums.exceptionEnum;
+import com.yaqiwe.community.exception.comException;
 import com.yaqiwe.community.service.userService;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * @author ：yaqiwe
@@ -18,6 +25,9 @@ import java.io.IOException;
 @Slf4j
 @Service
 public class UserServiceImpl implements userService {
+    @Autowired
+    userRepository userR;
+
     @Override
     public String getAccessToken(AccessTokenDto token) {
         MediaType mediaType= MediaType.get("application/json; charset=utf-8");
@@ -33,13 +43,12 @@ public class UserServiceImpl implements userService {
             //剪切Github返回的字符串获取access_token的值
             return string.split("&")[0].split("=")[1];
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new comException(exceptionEnum.GET_ACCESS_TOKEN_ERROR);
         }
-        return null;
     }
 
     @Override
-    public GitHubUserDto getGithubUser(String token) {
+    public String getGithubUser(String token) {
         String url="https://api.github.com/user?access_token="+token;
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -47,12 +56,36 @@ public class UserServiceImpl implements userService {
                 .build();
         try (Response response = client.newCall(request).execute()) {
             String resString = response.body().string();
-//            log.info("getGithubUser_resString:{}",resString);
-            return JSON.parseObject(resString,GitHubUserDto.class);
+            GitHubUserDto gitHubUserDto = JSON.parseObject(resString, GitHubUserDto.class);
+            //存储到数据库
+            String logToken = UUID.randomUUID().toString();
+            if(gitHubUserDto!=null){
+                user us=userR.findByAccountId(gitHubUserDto.getId());
+                if(us==null){
+                    us=new user();
+                    us.setName(gitHubUserDto.getLogin());
+                    us.setAccountId(gitHubUserDto.getId());
+                    us.setBio(gitHubUserDto.getBio());
+                }
+                us.setToken(logToken);
+                userR.save(us);
+            }
+            return logToken;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw  new comException(exceptionEnum.GET_USER_ERROR);
         }
-        return null;
+    }
+
+    @Override
+    public user getUserByToken(Cookie[] cookies) {
+        user us=null;
+        for (Cookie co : cookies) {
+            if (co.getName().equals("token")){
+                us=userR.findByToken(co.getValue());
+                break;
+            }
+        }
+        return us;
     }
 
 
