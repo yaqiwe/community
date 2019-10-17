@@ -79,10 +79,12 @@ public class UserServiceImpl implements userService {
     @Override
     public user getUserByToken(Cookie[] cookies) {
         user us=null;
-        for (Cookie co : cookies) {
-            if (co.getName().equals("token")){
-                us=userR.findByToken(co.getValue());
-                break;
+        if(cookies!=null){
+            for (Cookie co : cookies) {
+                if (co.getName().equals("token")){
+                    us=userR.findByToken(co.getValue());
+                    break;
+                }
             }
         }
         return us;

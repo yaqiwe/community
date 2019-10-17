@@ -11,6 +11,7 @@ import lombok.Getter;
 public enum  exceptionEnum {
     /*500-599服务端错误*/
     UNKNOWN_ERROR(501,"未知错误"),
+    CREATE_QUESTION_ERROR(502,"发布文章错误"),
 
     /*400-499客户端错误*/
     PARAMETER_ERROR(401,"参数校验错误"),

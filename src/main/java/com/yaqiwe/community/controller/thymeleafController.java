@@ -3,6 +3,7 @@ package com.yaqiwe.community.controller;
 import com.yaqiwe.community.dto.AccessTokenDto;
 import com.yaqiwe.community.entity.user;
 import com.yaqiwe.community.service.userService;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,5 +60,14 @@ public class thymeleafController {
 //        log.info("callBack githubUser:{}",githubUser);
         response.addCookie(new Cookie("token",logInToken));
         return "redirect:/index";
+    }
+
+    /**
+     * 跳转发布页面
+     * @return
+     */
+    @GetMapping(value="/publish")
+    public String publish(){
+        return "publish";
     }
 }
