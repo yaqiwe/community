@@ -19,7 +19,7 @@
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发起问题
             </h3>
             <hr>
-            <form action="/createQuestion" method="POST">
+            <form action="/createQuestion" method="post">
                 <div class="form-group">
                     <label for="title">问题标题</label>
                     <input type="text" class="form-control" id="title" name="title" placeholder="问题标题">
@@ -32,11 +32,11 @@
                     <label for="tag">添加标签</label>
                     <input type="text" class="form-control" id="tag" name="Tag" placeholder="输入标签以,分隔">
                 </div>
+                <div class="alter alter-danger" role="alter" th:text="${session.error}"></div>
                 <button type="submit" class="btn btn-success"
                     style="margin-bottom: 15px; float: right;">发布</button>
             </form>
             <hr>
-            <div class="alter alter-danger" role="alter" th:text="${error}"></div>
         </div>
         <div class="col-lg-3 col-sm-12  col-md-12 col-xs-12">
             <h2>预留面板</h2>

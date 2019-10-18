@@ -1,6 +1,9 @@
 package com.yaqiwe.community.service;
 
+import com.yaqiwe.community.dto.QuestionDto;
 import com.yaqiwe.community.entity.question;
+
+import java.util.List;
 
 /**
  * @author ：yaqiwe
@@ -18,4 +21,10 @@ public interface questionService {
      * @return
      */
     question createQuestion(String title,String problemDescribe,String Tag, Integer creator);
+
+    /**
+     * 查询所有的
+     * @return
+     */
+    List<QuestionDto> questionList();
 }

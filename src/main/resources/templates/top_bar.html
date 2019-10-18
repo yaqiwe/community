@@ -16,7 +16,7 @@
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                         data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">社区</span>
+                    <a src="/index"> <span class="sr-only">社区</span></a>
                 </button>
                 <a class="navbar-brand" href="#">社区</a>
             </div>
@@ -30,6 +30,9 @@
                     <button type="submit" class="btn btn-default">搜索</button>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
+                    <li th:if="${not #strings.isEmpty(session.user)}">
+                        <a href="/publish">发布</a>
+                    </li>
                     <li th:if="${#strings.isEmpty(session.user)}">
                         <a th:href="${logInUrl+'?client_id='+client_id+'&redirect_uri='+redirect_uri+'&state='+state}">登录</a>
                     </li>

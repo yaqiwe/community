@@ -1,6 +1,9 @@
 package com.yaqiwe.community.service.impl;
 
+import com.yaqiwe.community.Repostitory.questionRepository;
+import com.yaqiwe.community.dto.QuestionDto;
 import com.yaqiwe.community.entity.question;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -18,10 +23,14 @@ import static org.junit.Assert.*;
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@Slf4j
 public class questionServiceImplTest {
 
     @Autowired
     private questionServiceImpl questionS;
+
+    @Autowired
+    questionRepository questionR;
 
     @Test
     @Transactional
@@ -62,4 +71,15 @@ public class questionServiceImplTest {
 //        boolean que = questionS.createQuestion("titleTest", "ProblemDescribe", "", null);
 //        Assert.assertFalse(que);
 //    }
+
+    @Test
+    public void questionListTest(){
+        List<QuestionDto> dtoList = questionS.questionList();
+        List<question> all = questionR.findAll();
+        for (int i = 0; i < dtoList.size(); i++) {
+            log.info("questionListTest questionDto:{}",dtoList.get(i));
+            log.info("questionListTest question:{}",all.get(i));
+            Assert.assertEquals(dtoList.get(i).getTitle(),all.get(i).getTitle());
+        }
+    }
 }

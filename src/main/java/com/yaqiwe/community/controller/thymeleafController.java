@@ -2,11 +2,13 @@ package com.yaqiwe.community.controller;
 
 import com.yaqiwe.community.dto.AccessTokenDto;
 import com.yaqiwe.community.entity.user;
+import com.yaqiwe.community.service.questionService;
 import com.yaqiwe.community.service.userService;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -28,18 +30,24 @@ public class thymeleafController {
 
     @Autowired
     private AccessTokenDto accessTokenDto;
-    /*访问主页时跳转到index.html
+
+    @Autowired
+    private questionService questionS;
+    /**
+    *访问主页时跳转到index.html
     * 并设置登录GitHub时的属性
-    * */
+    */
     @GetMapping(value ={"/","/index",""})
     public String index(Map<String,String> map,
-                        HttpServletRequest request){
+                        HttpServletRequest request,
+                        Model model){
         map.put("logInUrl","https://github.com/login/oauth/authorize");
         map.put("client_id",accessTokenDto.getClient_id());
         map.put("redirect_uri",accessTokenDto.getRedirect_uri());
         map.put("state",accessTokenDto.getState());
         user us = users.getUserByToken(request.getCookies());
         request.getSession().setAttribute("user",us);
+        model.addAttribute("queList",questionS.questionList());
         return "index";
     }
 

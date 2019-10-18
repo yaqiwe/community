@@ -34,6 +34,9 @@ public class user {
 
     private String bio; //用户描述
 
+    @NotEmpty(message = "用户头像不能为空")
+    private String avatarUrl; //用户头像地址
+
     private Timestamp createTime;   //创建时间——数据库创建不用传值
 
     private Timestamp updateTime; //更新时间——数据库更新不用传值

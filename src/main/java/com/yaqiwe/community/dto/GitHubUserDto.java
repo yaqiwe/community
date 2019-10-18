@@ -19,4 +19,6 @@ public class GitHubUserDto {
     private Integer id;
     //用户描述
     private String bio;
+    //用户头像
+    private String avatarUrl;
 }

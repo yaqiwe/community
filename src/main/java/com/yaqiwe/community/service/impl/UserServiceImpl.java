@@ -56,6 +56,7 @@ public class UserServiceImpl implements userService {
                 .build();
         try (Response response = client.newCall(request).execute()) {
             String resString = response.body().string();
+//            log.info("getGithubUser User:{}",resString);
             GitHubUserDto gitHubUserDto = JSON.parseObject(resString, GitHubUserDto.class);
             //存储到数据库
             String logToken = UUID.randomUUID().toString();
@@ -66,6 +67,7 @@ public class UserServiceImpl implements userService {
                     us.setName(gitHubUserDto.getLogin());
                     us.setAccountId(gitHubUserDto.getId());
                     us.setBio(gitHubUserDto.getBio());
+                    us.setAvatarUrl(gitHubUserDto.getAvatarUrl());
                 }
                 us.setToken(logToken);
                 userR.save(us);
