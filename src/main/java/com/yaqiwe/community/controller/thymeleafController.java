@@ -47,7 +47,7 @@ public class thymeleafController {
         map.put("state",accessTokenDto.getState());
         user us = users.getUserByToken(request.getCookies());
         request.getSession().setAttribute("user",us);
-        model.addAttribute("queList",questionS.questionList());
+        model.addAttribute("queList",questionS.questionList(1,4));
         return "index";
     }
 

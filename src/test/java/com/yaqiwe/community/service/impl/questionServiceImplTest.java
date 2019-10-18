@@ -3,18 +3,18 @@ package com.yaqiwe.community.service.impl;
 import com.yaqiwe.community.Repostitory.questionRepository;
 import com.yaqiwe.community.dto.QuestionDto;
 import com.yaqiwe.community.entity.question;
+import com.yaqiwe.community.service.questionService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * @author ：yaqiwe
@@ -27,7 +27,7 @@ import static org.junit.Assert.*;
 public class questionServiceImplTest {
 
     @Autowired
-    private questionServiceImpl questionS;
+    private questionService questionS;
 
     @Autowired
     questionRepository questionR;
@@ -74,8 +74,9 @@ public class questionServiceImplTest {
 
     @Test
     public void questionListTest(){
-        List<QuestionDto> dtoList = questionS.questionList();
-        List<question> all = questionR.findAll();
+        List<QuestionDto> dtoList = questionS.questionList(1,null);
+        Sort sort=new Sort(Sort.Direction.DESC,"createTime");
+        List<question> all = questionR.findAll(sort);
         for (int i = 0; i < dtoList.size(); i++) {
             log.info("questionListTest questionDto:{}",dtoList.get(i));
             log.info("questionListTest question:{}",all.get(i));

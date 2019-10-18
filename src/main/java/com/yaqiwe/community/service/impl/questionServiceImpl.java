@@ -5,14 +5,15 @@ import com.yaqiwe.community.Repostitory.userRepository;
 import com.yaqiwe.community.dto.QuestionDto;
 import com.yaqiwe.community.entity.question;
 import com.yaqiwe.community.entity.user;
-import com.yaqiwe.community.enums.exceptionEnum;
-import com.yaqiwe.community.exception.comException;
 import com.yaqiwe.community.service.questionService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,9 +43,11 @@ public class questionServiceImpl implements questionService {
     }
 
     @Override
-    public List<QuestionDto> questionList() {
+    public List<QuestionDto> questionList(Integer page,Integer limit) {
+        Sort  sort=new Sort(Sort.Direction.DESC,"createTime");
+        Pageable pag=PageRequest.of(page-1,limit,sort);
         List<QuestionDto> dtoList=new ArrayList<>();
-        List<question> queAll = questionR.findAll();
+        Page<question> queAll = questionR.findAll(pag);
         for (question que : queAll) {
             QuestionDto dto = new QuestionDto();
             BeanUtils.copyProperties(que,dto);
